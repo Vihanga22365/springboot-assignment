@@ -1,5 +1,7 @@
 package com.virtusa.vihanga.employeeservice.model;
 
+import com.virtusa.vihanga.employeeservice.utill.EmployeeType;
+import com.virtusa.vihanga.employeeservice.utill.GenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,6 @@ public class Employee {
     private String department;
     private String phoneNo;
     private String address;
-    private String gender;
-    private String employeeType;
+    private GenderType gender;
+    private EmployeeType employeeType;
 }
