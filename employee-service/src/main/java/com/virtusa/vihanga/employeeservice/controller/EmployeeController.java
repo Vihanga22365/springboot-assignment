@@ -1,0 +1,60 @@
+package com.virtusa.vihanga.employeeservice.controller;
+
+import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
+import com.virtusa.vihanga.employeeservice.dto.EmployeeSalaryResponse;
+import com.virtusa.vihanga.employeeservice.model.Employee;
+import com.virtusa.vihanga.employeeservice.service.EmployeeService;
+import com.virtusa.vihanga.employeeservice.utill.StandardResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+@RequestMapping("api/v1")
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @PostMapping("employee")
+    public ResponseEntity<StandardResponse> createEmployee(@RequestBody Employee employee) {
+        EmployeeResponse employeeResponse = employeeService.createEmployee(employee);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(201, "Employee Created Successfully", employeeResponse), HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("employee/{id}")
+    public ResponseEntity<StandardResponse> getEmployee(@PathVariable("id") String employeeId) {
+        EmployeeResponse employeeResponse = employeeService.getEmployee(employeeId);
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Employee Fetch Successfully", employeeResponse), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("employee/salary/{id}")
+    @CircuitBreaker(name = "employee", fallbackMethod = "fallBackMethodEmployee")
+    @TimeLimiter(name = "employee")
+    @Retry(name="employee")
+    public CompletableFuture<ResponseEntity<StandardResponse>> getEmployeeSalary(@PathVariable("id") String employeeId) {
+        EmployeeSalaryResponse employeeSalaryResponse = employeeService.getEmployeeSalary(employeeId);
+
+        return CompletableFuture.supplyAsync(() -> new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Employee Salary Fetch Successfully", employeeSalaryResponse), HttpStatus.OK
+        ));
+    }
+
+    public CompletableFuture<ResponseEntity<StandardResponse>> fallBackMethodEmployee(@PathVariable("id") String employeeId, RuntimeException runtimeException) {
+        return CompletableFuture.supplyAsync(() -> new ResponseEntity<StandardResponse>(
+                new StandardResponse(503, "Department Service Unavailable", null), HttpStatus.SERVICE_UNAVAILABLE
+        ));
+    }
+}
