@@ -84,9 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void uploadEmployee(MultipartFile multipartFile) throws IOException {
-        log.info("inside upload Employee - Service");
         if (ExcelUploadImpl.isValidExcelFile(multipartFile)) {
-            log.info("inside upload Employee - In Service");
             List<Employee> employees = ExcelUploadImpl.getEmployeeDataFromExcel(multipartFile);
             employeeRepository.saveAll(employees);
         }

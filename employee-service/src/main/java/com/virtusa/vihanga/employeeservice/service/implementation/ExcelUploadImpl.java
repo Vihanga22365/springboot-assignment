@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class ExcelUploadImpl {
     }
 
     public static List<Employee> getEmployeeDataFromExcel(MultipartFile multipartFile) throws IOException {
-        log.info("inside upload Employee - Upload");
         List<Employee> employees = new ArrayList<>();
 
         Workbook workbook = new XSSFWorkbook(multipartFile.getInputStream());
@@ -57,6 +57,8 @@ public class ExcelUploadImpl {
             employees.add(employee);
 
         }
+
+        workbook.close();
 
         return employees;
     }

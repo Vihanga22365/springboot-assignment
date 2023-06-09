@@ -37,7 +37,6 @@ public class EmployeeController {
 
     @PostMapping("employee/excelUpload")
     public ResponseEntity<StandardResponse> uploadEmployee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        log.info("inside upload Employee - Comtroller");
         employeeService.uploadEmployee(multipartFile);
 
         return new ResponseEntity<StandardResponse>(

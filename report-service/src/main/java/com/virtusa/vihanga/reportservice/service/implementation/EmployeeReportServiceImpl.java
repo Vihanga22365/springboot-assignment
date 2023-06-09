@@ -72,14 +72,12 @@ public class EmployeeReportServiceImpl implements EmployeeReportService {
             try (Workbook workbook = new XSSFWorkbook()) {
                 Sheet sheet = workbook.createSheet("Employees");
 
-                // Create headers
                 Row headerRow = sheet.createRow(0);
                 headerRow.createCell(0).setCellValue("Employee Id");
                 headerRow.createCell(1).setCellValue("Employee Name");
                 headerRow.createCell(2).setCellValue("Department");
                 headerRow.createCell(3).setCellValue("Salary");
 
-                // Create data rows
                 for (int i = 0; i < employees.size(); i++) {
                     EmployeeSalaryResponse employee = employees.get(i);
                     Row dataRow = sheet.createRow(i + 1);
@@ -89,7 +87,6 @@ public class EmployeeReportServiceImpl implements EmployeeReportService {
                     dataRow.createCell(3).setCellValue(employee.getSalary());
                 }
 
-                // Write workbook to ByteArrayOutputStream
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 workbook.write(outputStream);
                 return outputStream.toByteArray();
