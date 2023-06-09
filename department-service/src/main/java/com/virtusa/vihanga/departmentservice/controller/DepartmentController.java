@@ -4,13 +4,17 @@ import com.virtusa.vihanga.departmentservice.dto.DepartmentResponse;
 import com.virtusa.vihanga.departmentservice.model.Department;
 import com.virtusa.vihanga.departmentservice.service.DepartmentService;
 import com.virtusa.vihanga.departmentservice.utill.StandardResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1")
+@Slf4j
 public class DepartmentController {
 
     @Autowired
@@ -30,5 +34,12 @@ public class DepartmentController {
     @GetMapping("department/{id}")
     public DepartmentResponse getDepartment(@PathVariable("id") String departmentId) {
         return departmentService.getDepartment(departmentId);
+    }
+
+    @GetMapping("department/salary/{minSalary}")
+    public List<DepartmentResponse> getAllDepartments(@PathVariable("minSalary") double minSalary) {
+        List<DepartmentResponse> departmentResponses = departmentService.getAllDepartments(minSalary);
+        log.info("Department Controller {}", departmentResponses);
+        return  departmentResponses;
     }
 }

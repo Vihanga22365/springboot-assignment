@@ -6,18 +6,25 @@ import com.virtusa.vihanga.employeeservice.dto.EmployeeSalaryResponse;
 import com.virtusa.vihanga.employeeservice.model.Employee;
 import com.virtusa.vihanga.employeeservice.repository.EmployeeRepository;
 import com.virtusa.vihanga.employeeservice.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
+    @Lazy
     private WebClient.Builder builder;
 
     @Override
@@ -73,5 +80,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
 
         return employeeSalaryResponse;
+    }
+
+    @Override
+    public void uploadEmployee(MultipartFile multipartFile) throws IOException {
+        log.info("inside upload Employee - Service");
+        if (ExcelUploadImpl.isValidExcelFile(multipartFile)) {
+            log.info("inside upload Employee - In Service");
+            List<Employee> employees = ExcelUploadImpl.getEmployeeDataFromExcel(multipartFile);
+            employeeRepository.saveAll(employees);
+        }
     }
 }
