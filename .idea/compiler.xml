@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sheduler-service" />
+        <module name="configuaration-server" />
         <module name="report-service" />
         <module name="department-service" />
         <module name="discovery-service" />
@@ -15,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="configuaration-server" target="17" />
       <module name="department-service" target="17" />
       <module name="discovery-service" target="17" />
       <module name="employee-service" target="17" />
@@ -24,6 +26,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="configuaration-server" options="-parameters" />
       <module name="department-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="employee-service" options="-parameters" />

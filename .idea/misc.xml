@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/department-service/pom.xml" />
         <option value="$PROJECT_DIR$/report-service/pom.xml" />
         <option value="$PROJECT_DIR$/sheduler-service/pom.xml" />
+        <option value="$PROJECT_DIR$/configuaration-server/pom.xml" />
       </list>
     </option>
   </component>
