@@ -1,5 +1,6 @@
 package com.virtusa.vihanga.reportservice.service.implementation;
 
+import com.virtusa.vihanga.reportservice.config.DepartmentConfigUrl;
 import com.virtusa.vihanga.reportservice.dto.DepartmentResponse;
 import com.virtusa.vihanga.reportservice.dto.EmployeeResponse;
 import com.virtusa.vihanga.reportservice.dto.EmployeeSalaryResponse;
@@ -31,6 +32,8 @@ public class EmployeeReportServiceImpl implements EmployeeReportService {
     private EmployeeReportRepository employeeReportRepository;
     @Autowired
     private WebClient.Builder builder;
+    @Autowired
+    private DepartmentConfigUrl departmentConfigUrl;
 
     public List<EmployeeSalaryResponse> getEmployees() {
         log.info("Report Service");
@@ -39,7 +42,7 @@ public class EmployeeReportServiceImpl implements EmployeeReportService {
 //        List<String> employeeDepartmentId = employees.stream().map(employee -> employee.getDepartment()).toList();
 
         DepartmentResponse[] departmentResponses = builder.build().get()
-                .uri("http://department-service/api/v1/department/salary/{minSalary}", 10000)
+                .uri(departmentConfigUrl.getDepartmentUrl(), 10000)
                 .retrieve()
                 .bodyToMono(DepartmentResponse[].class)
                 .block();

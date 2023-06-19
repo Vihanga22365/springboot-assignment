@@ -1,5 +1,6 @@
 package com.virtusa.vihanga.employeeservice.service.implementation;
 
+import com.virtusa.vihanga.employeeservice.config.DepartmentUrlConfiguration;
 import com.virtusa.vihanga.employeeservice.dto.DepartmentResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeSalaryResponse;
@@ -26,6 +27,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     @Lazy
     private WebClient.Builder builder;
+
+    @Autowired
+    private DepartmentUrlConfiguration departmentUrlConfiguration;
 
     @Override
     public EmployeeResponse createEmployee(Employee employee) {
@@ -67,7 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         String departmentId = employeeResponse.getDepartment();
 
         DepartmentResponse departmentResponse = builder.build().get()
-                .uri("http://department-service/api/v1/department/{id}", departmentId)
+                .uri(departmentUrlConfiguration.getDepartmentByIdUrl(), departmentId)
                 .retrieve()
                 .bodyToMono(DepartmentResponse.class)
                 .block();
