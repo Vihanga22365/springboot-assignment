@@ -9,6 +9,18 @@ pipeline {
             }
         }
 
+        stage('Build and Deploy Discovery Service') {
+            steps {
+                dir('discovery-service') {
+                    // Build the discovery-service using Maven
+                    sh 'mvn clean package'
+
+                    // Deploy the discovery-service WAR file to Tomcat
+                    sh 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
+                }
+            }
+        }
+
         stage('Build and Deploy Configuration Service') {
             steps {
                 dir('configuaration-server') {
@@ -29,18 +41,6 @@ pipeline {
 
                     // Deploy the department-service WAR file to Tomcat
                     sh 'curl --upload-file target/department-service.war "http://localhost:8080/manager/text/deploy?path=/department-service&update=true" --user admin:admin'
-                }
-            }
-        }
-
-        stage('Build and Deploy Discovery Service') {
-            steps {
-                dir('discovery-service') {
-                    // Build the discovery-service using Maven
-                    sh 'mvn clean package'
-
-                    // Deploy the discovery-service WAR file to Tomcat
-                    sh 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
                 }
             }
         }
