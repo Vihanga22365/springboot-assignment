@@ -11,6 +11,7 @@
 	<groupId>com.virtusa.vihanga</groupId>
 	<artifactId>department-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>department-service</name>
 	<description>Department Service for assignment</description>
 	<properties>

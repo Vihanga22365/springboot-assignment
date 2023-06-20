@@ -11,6 +11,7 @@
 	<groupId>com.virtusa.vihanga</groupId>
 	<artifactId>discovery-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>discovery-service</name>
 	<description>Discovery Service for assignment</description>
 	<properties>
