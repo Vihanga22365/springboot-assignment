@@ -12,6 +12,8 @@ pipeline {
         stage('Build and Deploy Discovery Service') {
             steps {
                 dir('discovery-service') {
+
+                    echo "Inside Discovery Server"
                     // Build the discovery-service using Maven
                     sh 'mvn clean package'
 
