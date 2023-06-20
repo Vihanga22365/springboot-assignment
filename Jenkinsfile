@@ -11,12 +11,12 @@ pipeline {
 
         stage('Build and Deploy Configuration Service') {
             steps {
-                dir('configuaration-service') {
+                dir('configuaration-server') {
                     // Build the configuration-service using Maven
                     sh 'mvn clean package'
 
                     // Deploy the configuration-service WAR file to Tomcat
-                    sh 'curl --upload-file target/configuration-service.war "http://localhost:8080/manager/text/deploy?path=/configuration-service&update=true" --user admin:admin'
+                    sh 'curl --upload-file target/configuration-server.war "http://localhost:8080/manager/text/deploy?path=/configuration-service&update=true" --user admin:admin'
                 }
             }
         }
