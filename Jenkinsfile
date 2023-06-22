@@ -15,7 +15,7 @@ pipeline {
 
                     echo "Inside Discovery Server"
                     // Build the discovery-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the discovery-service WAR file to Tomcat
                     sh 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
@@ -27,7 +27,7 @@ pipeline {
             steps {
                 dir('configuaration-server') {
                     // Build the configuration-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the configuration-service WAR file to Tomcat
                     sh 'curl --upload-file target/configuration-server.war "http://localhost:8080/manager/text/deploy?path=/configuration-service&update=true" --user admin:admin'
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 dir('department-service') {
                     // Build the department-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the department-service WAR file to Tomcat
                     sh 'curl --upload-file target/department-service.war "http://localhost:8080/manager/text/deploy?path=/department-service&update=true" --user admin:admin'
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 dir('employee-service') {
                     // Build the employee-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the employee-service WAR file to Tomcat
                     sh 'curl --upload-file target/employee-service.war "http://localhost:8080/manager/text/deploy?path=/employee-service&update=true" --user admin:admin'
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 dir('report-service') {
                     // Build the report-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the report-service WAR file to Tomcat
                     sh 'curl --upload-file target/report-service.war "http://localhost:8080/manager/text/deploy?path=/report-service&update=true" --user admin:admin'
@@ -75,7 +75,7 @@ pipeline {
             steps {
                 dir('sheduler-service') {
                     // Build the scheduler-service using Maven
-                    sh 'mvn clean package'
+                    sh 'mvn clean compile package'
 
                     // Deploy the scheduler-service WAR file to Tomcat
                     sh 'curl --upload-file target/scheduler-service.war "http://localhost:8080/manager/text/deploy?path=/scheduler-service&update=true" --user admin:admin'

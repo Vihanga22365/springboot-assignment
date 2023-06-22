@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/configuaration-server" />
+    <file type="web" url="file://$PROJECT_DIR$/department-service" />
+    <file type="web" url="file://$PROJECT_DIR$/discovery-service" />
+    <file type="web" url="file://$PROJECT_DIR$/employee-service" />
+    <file type="web" url="file://$PROJECT_DIR$/report-service" />
+    <file type="web" url="file://$PROJECT_DIR$/sheduler-service" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
