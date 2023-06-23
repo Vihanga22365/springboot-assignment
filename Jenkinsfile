@@ -19,7 +19,10 @@ pipeline {
 
                     echo "Inside Discovery Server down"
                     // Deploy the discovery-service WAR file to Tomcat
-                    bat 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
+                     // Verify the presence of the WAR file
+                                bat 'ls -la target'
+                                // Deploy the discovery-service WAR file to Tomcat
+                                bat 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
                 }
             }
         }
