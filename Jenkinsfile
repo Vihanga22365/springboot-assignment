@@ -19,7 +19,8 @@ pipeline {
 
                     echo "Inside Discovery Server down"
                     // Stop the local Tomcat server
-                                    bat 'C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat' // Stop the Tomcat server
+                    // Stop the local Tomcat server
+                                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                                     // Remove the previous deployment
                                     bat 'rm -rf "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/discovery-service"'
@@ -28,7 +29,7 @@ pipeline {
                                     bat 'cp target/discovery-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                                     // Start the Tomcat server
-                                    bat 'C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat'
+                                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
             }
         }
