@@ -15,6 +15,7 @@ pipeline {
 
                     echo "Inside Discovery Server up"
                     // Build the discovery-service using Maven
+                    tool 'MAVEN_HOME'
                     sh 'mvn clean compile package'
 
                     echo "Inside Discovery Server down"
