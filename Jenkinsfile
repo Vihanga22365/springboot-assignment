@@ -19,17 +19,16 @@ pipeline {
 
                     echo "Inside Discovery Server down"
                     // Stop the local Tomcat server
-                    bat 'CATALINA_HOME="C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1"' // Set the Tomcat installation directory
-                    bat '$CATALINA_HOME/bin/shutdown.bat' // Stop the Tomcat server
+                                    bat 'C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat' // Stop the Tomcat server
 
-                    // Remove the previous deployment
-                    bat 'rm -rf "$CATALINA_HOME/webapps/discovery-service"'
+                                    // Remove the previous deployment
+                                    bat 'rm -rf "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/discovery-service"'
 
-                    // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'cp target/discovery-service-0.0.1-SNAPSHOT.war "$CATALINA_HOME/webapps/"'
+                                    // Copy the newly built WAR file to the Tomcat webapps directory
+                                    bat 'cp target/discovery-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
-                    // Start the Tomcat server
-                    bat '$CATALINA_HOME/bin/startup.bat'
+                                    // Start the Tomcat server
+                                    bat 'C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat'
                 }
             }
         }
