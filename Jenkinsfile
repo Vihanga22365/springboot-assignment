@@ -19,7 +19,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy target/discovery-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy target\\discovery-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
@@ -27,23 +27,23 @@ pipeline {
             }
         }
 
-//         stage('Build and Deploy Configuration Service') {
-//             steps {
-//                 dir('configuaration-server') {
-//                     // Build the discovery-service using Maven
-//                     bat 'mvn clean compile package'
-//
-//                     // Stop the local Tomcat server
-//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
-//
-//                     // Copy the newly built WAR file to the Tomcat webapps directory
-//                     bat 'copy target/configuaration-server-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
-//
-//                     // Start the Tomcat server
-//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
-//                 }
-//             }
-//         }
+        stage('Build and Deploy Configuration Service') {
+            steps {
+                dir('configuaration-server') {
+                    // Build the discovery-service using Maven
+                    bat 'mvn clean compile package'
+
+                    // Stop the local Tomcat server
+                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
+
+                    // Copy the newly built WAR file to the Tomcat webapps directory
+                    bat 'copy target\\configuaration-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+
+                    // Start the Tomcat server
+                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
+                }
+            }
+        }
 
         stage('Build and Deploy Department Service') {
             steps {
@@ -55,7 +55,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy target/department-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy target\\department-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
@@ -63,23 +63,23 @@ pipeline {
             }
         }
 
-//         stage('Build and Deploy Employee Service') {
-//             steps {
-//                 dir('employee-service') {
-//                     // Build the discovery-service using Maven
-//                     bat 'mvn clean compile package'
-//
-//                     // Stop the local Tomcat server
-//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
-//
-//                     // Copy the newly built WAR file to the Tomcat webapps directory
-//                     bat 'copy target/employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
-//
-//                     // Start the Tomcat server
-//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
-//                 }
-//             }
-//         }
+        stage('Build and Deploy Employee Service') {
+            steps {
+                dir('employee-service') {
+                    // Build the discovery-service using Maven
+                    bat 'mvn clean compile package'
+
+                    // Stop the local Tomcat server
+                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
+
+                    // Copy the newly built WAR file to the Tomcat webapps directory
+                    bat 'copy target\\employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+
+                    // Start the Tomcat server
+                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
+                }
+            }
+        }
 
         stage('Build and Deploy Report Service') {
             steps {
@@ -91,7 +91,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy target/report-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy target\\report-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
@@ -109,7 +109,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy target/sheduler-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy target\\sheduler-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
