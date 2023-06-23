@@ -15,9 +15,7 @@ pipeline {
 
                     echo "Inside Discovery Server up"
                     // Build the discovery-service using Maven
-                    withMaven(maven: 'MAVEN_HOME') {
-                        sh 'mvn clean compile package'
-                    }
+                    sh 'mvn clean compile package'
 
                     echo "Inside Discovery Server down"
                     // Deploy the discovery-service WAR file to Tomcat
