@@ -18,8 +18,7 @@ pipeline {
                     bat 'mvn clean compile package'
 
                     echo "Inside Discovery Server down"
-
-                    tomcatDeploy warFile: 'target/discovery-service.war', url: 'http://localhost:8080/manager', path: '/discovery-service', username: 'admin', password: 'admin'
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://localhost:8080/manager', path: '/discovery-service')], warFiles: '**/*.war'
                 }
             }
         }
