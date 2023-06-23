@@ -13,10 +13,11 @@ pipeline {
             steps {
                 dir('discovery-service') {
 
-                    echo "Inside Discovery Server"
+                    echo "Inside Discovery Server up"
                     // Build the discovery-service using Maven
                     sh 'mvn clean compile package'
 
+                    echo "Inside Discovery Server down"
                     // Deploy the discovery-service WAR file to Tomcat
                     sh 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
                 }
