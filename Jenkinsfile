@@ -18,11 +18,8 @@ pipeline {
                     bat 'mvn clean compile package'
 
                     echo "Inside Discovery Server down"
-                    // Verify the presence of the WAR file
-                                bat 'dir target'
 
-                                // Deploy the discovery-service WAR file to Tomcat
-                                bat 'curl --upload-file target/discovery-service.war "http://localhost:8080/manager/text/deploy?path=/discovery-service&update=true" --user admin:admin'
+                    tomcatDeploy warFile: 'target/discovery-service.war', url: 'http://localhost:8080/manager', path: '/discovery-service', username: 'admin', password: 'admin'
                 }
             }
         }
