@@ -19,7 +19,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\discovery-service\target\discovery-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\discovery-service\\target\\discovery-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
@@ -36,7 +36,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\configuaration-service\target\configuaration-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\configuaration-service\\target\\configuaration-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
@@ -54,7 +54,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\department-service\target\department-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\department-service\\target\\department-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
@@ -71,7 +71,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\employee-service\target\employee-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\employee-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
@@ -88,7 +88,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\report-service\target\report-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\report-service\\target\\report-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
@@ -105,7 +105,7 @@ pipeline {
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
                     // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy "C:\ProgramData\Jenkins\.jenkins\workspace\Employee System\sheduler-service\target\sheduler-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+                    bat 'copy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\sheduler-service\\target\\sheduler-server-0.0.1-SNAPSHOT.war" "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
                     // Start the Tomcat server
                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                 }
