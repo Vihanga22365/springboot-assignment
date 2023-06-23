@@ -22,9 +22,6 @@ pipeline {
                     // Stop the local Tomcat server
                                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
 
-                                    // Remove the previous deployment
-                                    bat 'rmdir /s /q "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/discovery-service"'
-
                                     // Copy the newly built WAR file to the Tomcat webapps directory
                                     bat 'copy target/discovery-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
