@@ -25,7 +25,6 @@ public class CucumberConfig {
 
     @Before
     public void setUp() throws Exception {
-
         headers.set("Content-Type", "application/json");
     }
 }

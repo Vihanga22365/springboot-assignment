@@ -6,8 +6,14 @@ Feature: Employee Management
     Then the response status code should be 201
     And the response body contains the employee details
 
-#  Scenario: Get Employee
-#    Given an employee ID
-#    When a GET request is sent to "/api/v1/employee/{id}"
-#    Then the response status code should be 200
-#    And the response body contains the employee details
+  Scenario: Get Single Employee Details
+    Given the employee's id
+    When a Get request is sent to "employee/EMP05"
+    Then the get employee response status code should be 200
+    And the response body contain that employee's details
+
+  Scenario: Get Single Employee Salary
+    Given the employee's id that salary needed
+    When a Get request is sent to "employee/salary/EMP03" to get salary;
+    Then the get salary response status code should be 200
+    And the response body contain that employee's salary details

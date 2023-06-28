@@ -18,13 +18,40 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 public class CucumberSteps extends CucumberConfig {
-    Employee employee;
-    String URI;
-    private ResponseEntity<StandardResponse> responseEntity;
+    private Employee employee;
+    private String employeeId;
+    private String URI;
     private String responseMessage;
 
-    public String getMainUrl() {
-        return mainUrl+8500+"/api/v1/";
+    private String getMainUrl() {
+        return mainUrl+"8500/api/v1/";
+    }
+
+    private ResponseEntity<StandardResponse> getEmployee() {
+        HttpEntity<Employee> entity = new HttpEntity<Employee>(headers);
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        return restTemplate.exchange(URI, HttpMethod.GET, entity, StandardResponse.class);
+    }
+
+    private ResponseEntity<StandardResponse> createEmployee() {
+        HttpEntity<Employee> entity = new HttpEntity<Employee>(employee, headers);
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        return restTemplate.exchange(URI, HttpMethod.POST, entity, StandardResponse.class);
+    }
+
+    private ResponseEntity<StandardResponse> getEmployeeSalary() {
+        HttpEntity<Employee> entity = new HttpEntity<Employee>(headers);
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        return restTemplate.exchange(URI, HttpMethod.GET, entity, StandardResponse.class);
     }
 
     @Given("the employee details request body")
@@ -40,30 +67,64 @@ public class CucumberSteps extends CucumberConfig {
                 .build();
     }
     @When("a POST request is sent to {string}")
-    public void a_post_request_is_sent_to(String string) {
-        URI = getMainUrl() + string;
+    public void a_post_request_is_sent_to(String urlPath) {
+        URI = getMainUrl() + urlPath;
     }
     @Then("the response status code should be {int}")
     public void the_response_status_code_should_be(Integer expectedStatusCode) {
-
-        HttpEntity<Employee> entity = new HttpEntity<Employee>(employee, headers);
-
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-
-        ResponseEntity<StandardResponse> postResponse = restTemplate.exchange(URI, HttpMethod.POST, entity, StandardResponse.class);
-        assertEquals(Optional.of(expectedStatusCode), Optional.of(postResponse.getStatusCodeValue()));
+        ResponseEntity<StandardResponse> postEmployee = createEmployee();
+        assertEquals(Optional.of(expectedStatusCode), Optional.of(postEmployee.getStatusCodeValue()));
     }
     @Then("the response body contains the employee details")
     public void the_response_body_contains_the_employee_details() {
         responseMessage = "Employee Created Successfully";
+        ResponseEntity<StandardResponse> postEmployee = createEmployee();
+        assertEquals(responseMessage, postEmployee.getBody().getMessage());
+    }
 
-        HttpEntity<Employee> entity = new HttpEntity<Employee>(employee, headers);
+    @Given("the employee's id")
+    public void the_employee_s_id() {
+        employeeId = "EMP05";
+    }
 
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
+    @When("a Get request is sent to {string}")
+    public void a_get_request_is_sent_to(String urlPath) {
+        URI = getMainUrl()+urlPath;
+    }
 
-        ResponseEntity<StandardResponse> postResponse = restTemplate.exchange(URI, HttpMethod.POST, entity, StandardResponse.class);
-        assertEquals(responseMessage, postResponse.getBody().getMessage());
+    @Then("the get employee response status code should be {int}")
+    public void the_get_employee_response_status_code_should_be(Integer expectedStatusCode) {
+        ResponseEntity<StandardResponse> getResponse = getEmployee();
+        assertEquals(Optional.ofNullable(expectedStatusCode), Optional.ofNullable(getResponse.getStatusCodeValue()));
+    }
+
+    @Then("the response body contain that employee's details")
+    public void the_response_body_contain_that_employee_s_details() {
+        responseMessage = "Employee Fetch Successfully";
+        ResponseEntity<StandardResponse> getResponse = getEmployee();
+        assertEquals(responseMessage, getResponse.getBody().getMessage());
+    }
+
+    @Given("the employee's id that salary needed")
+    public void the_employee_s_id_that_salary_needed() {
+        employeeId = "EMP05";
+    }
+
+    @When("a Get request is sent to {string} to get salary;")
+    public void a_get_request_is_sent_to_to_get_salary(String urlPath) {
+        URI = getMainUrl() + urlPath;
+    }
+
+    @Then("the get salary response status code should be {int}")
+    public void the_get_salary_response_status_code_should_be(Integer expectedStatusCode) {
+        ResponseEntity<StandardResponse> getSalaryResponse = getEmployeeSalary();
+        assertEquals(Optional.ofNullable(expectedStatusCode), Optional.ofNullable(getSalaryResponse.getStatusCodeValue()));
+    }
+
+    @Then("the response body contain that employee's salary details")
+    public void the_response_body_contain_that_employee_s_salary_details() {
+        responseMessage = "Employee Salary Fetch Successfully";
+        ResponseEntity<StandardResponse> getSalaryResponse = getEmployeeSalary();
+        assertEquals(responseMessage, getSalaryResponse.getBody().getMessage());
     }
 }
