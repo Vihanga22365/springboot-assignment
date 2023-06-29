@@ -22,6 +22,7 @@ pipeline {
                 script {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
+                    echo "Gi Presentage". coveragePercentage
                     if (coveragePercentage > 80) {
                         dir('employee-service') {
                             // Build the employee-service using Maven
