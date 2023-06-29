@@ -9,19 +9,23 @@ pipeline {
             }
         }
 
-        stage('Unit Testing') {
+        stage('Unit Testing for Employee Service') {
             steps {
                 dir('employee-service') {
-                    // Run unit tests using Maven or your preferred build tool
                     bat 'mvn clean test' // Assuming Maven is used for building
+
+                    script {
+                        def testResults = "**/target/surefire-reports/TEST-*.xml"
+                        def coveragePercentage = calculateCoveragePercentage(testResults)
+                        echo "Unit testing coverage percentage: ${coveragePercentage}%"
+                    }
                 }
             }
         }
 
-        stage('Cucumber Testing') {
+        stage('Cucumber Testing for Employee Service') {
             steps {
                 dir('employee-service') {
-                    // Run Cucumber tests using Maven or your preferred build tool
                     bat 'mvn clean verify' // Assuming Maven is used for building
                 }
             }
