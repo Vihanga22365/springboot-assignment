@@ -150,7 +150,16 @@ pipeline {
 }
 
 def calculateCoveragePercentage(testResults) {
-    return 90;
+    def xml = new XmlSlurper().parse(testResults)
+    def totalTests = xml.'@tests'
+    def totalPassed = xml.'@passed'
+
+    if (totalTests.toInteger() == 0) {
+        return 0
+    }
+
+    def coveragePercentage = (totalPassed.toInteger() * 100) / totalTests.toInteger()
+    return coveragePercentage
 }
 
 def checkCucumberTestStatus(cucumberResults) {
