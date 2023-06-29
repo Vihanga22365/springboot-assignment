@@ -31,6 +31,13 @@ pipeline {
             steps {
                 dir('employee-service') {
                     bat 'mvn clean verify' // Assuming Maven is used for building
+
+                    // Generate XML and HTML reports
+                    bat 'mvn verify -Dcucumber.options="--plugin junit:target/cucumber-results.xml --plugin html:target/cucumber-html-report"'
+
+                    // Archive the reports
+                    archiveArtifacts artifacts: 'target/cucumber-results.xml, target/cucumber-html-report/**', fingerprint: true
+
                     script {
                         def cucumberResults = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\cucumber-results.xml"
                         def cucumberTestStatus = checkCucumberTestStatus(cucumberResults)
