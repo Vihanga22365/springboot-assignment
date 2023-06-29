@@ -155,13 +155,12 @@ pipeline {
 
 def calculateCoveragePercentage(testResults) {
 
-    echo "Hii"
     def testSuites = new XmlSlurper().parse(testResults)
     def totalTests = 0
 
-    echo "Man"
     def totalCovered = 0
 
+    echo "Hii Man " . totalCovered;
 
     testSuites.'**'.findAll { testCase ->
         testCase.name() == 'testcase'
