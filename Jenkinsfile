@@ -169,7 +169,7 @@ def calculateCoveragePercentage(testResults) {
         }
     }
 
-    echo 'Total '. totalCovered
+    echo totalCovered
 
     if (totalTests > 0) {
         coveragePercentage = (totalCovered / totalTests) * 100
