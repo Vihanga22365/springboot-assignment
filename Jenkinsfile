@@ -18,6 +18,10 @@ pipeline {
                         def testResults = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\surefire-reports\\TEST-com.virtusa.vihanga.employeeservice.controller.EmployeeControllerTest.xml"
                         def coveragePercentage = calculateCoveragePercentage(testResults)
                         echo "Unit testing coverage percentage: ${coveragePercentage}%"
+
+                        if (coveragePercentage < 80) {
+                            error "Unit testing coverage is below the minimum threshold of 80%."
+                        }
                     }
                 }
             }
