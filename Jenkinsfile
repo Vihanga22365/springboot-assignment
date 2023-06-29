@@ -154,6 +154,8 @@ def calculateCoveragePercentage(testResults) {
         def totalTests = 0
         def totalCovered = 0
 
+        echo "Vihanga " . testSuites
+
         testSuites.'**'.findAll { testCase ->
             testCase.name() == 'testcase'
         }.each {
