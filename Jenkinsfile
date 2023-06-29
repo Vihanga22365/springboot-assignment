@@ -14,11 +14,11 @@ pipeline {
                 dir('employee-service') {
                     bat 'mvn clean test' // Assuming Maven is used for building
 
-//                     script {
-//                         def testResults = "**/target/surefire-reports/TEST-*.xml"
-//                         def coveragePercentage = calculateCoveragePercentage(testResults)
-//                         echo "Unit testing coverage percentage: ${coveragePercentage}%"
-//                     }
+                    script {
+                        def testResults = "**/target/surefire-reports/TEST-*.xml"
+                        def coveragePercentage = calculateCoveragePercentage(testResults)
+                        echo "Unit testing coverage percentage: ${coveragePercentage}%"
+                    }
                 }
             }
         }
@@ -151,27 +151,25 @@ pipeline {
 
 def calculateCoveragePercentage(testResults) {
 
-    echo "Hi Friends"
     def testSuites = new XmlSlurper().parse(testResults)
-        def totalTests = 0
-        def totalCovered = 0
+    def totalTests = 0
+    def totalCovered = 0
 
-        echo "Hi all"
 
-        testSuites.'**'.findAll { testCase ->
-            testCase.name() == 'testcase'
-        }.each {
-            totalTests++
-            if (it.'@covered' != 'false') {
-                totalCovered++
-            }
+    testSuites.'**'.findAll { testCase ->
+        testCase.name() == 'testcase'
+    }.each {
+        totalTests++
+        if (it.'@covered' != 'false') {
+            totalCovered++
         }
+    }
 
-        if (totalTests > 0) {
-            coveragePercentage = (totalCovered / totalTests) * 100
-        }
+    if (totalTests > 0) {
+        coveragePercentage = (totalCovered / totalTests) * 100
+    }
 
-        return coveragePercentage.toInteger()
+    return coveragePercentage.toInteger()
 }
 
 def checkCucumberTestStatus(cucumberResults) {
