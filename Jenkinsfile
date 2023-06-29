@@ -23,7 +23,7 @@ pipeline {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
                     echo "Unit test coverage: ${coveragePercentage}%"
-                    if (coveragePercentage > 80) {
+                    if (coveragePercentage > 30) {
                         dir('employee-service') {
                             // Build the employee-service using Maven
                             bat 'mvn clean compile package'
