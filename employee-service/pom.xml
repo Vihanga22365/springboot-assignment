@@ -119,11 +119,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
-				<configuration>
-					<excludes>
-						<exclude>com/virtusa/vihanga/employeeservice/dto*</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -138,6 +133,15 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>com/virtusa/vihanga/employeeservice/dto/**</exclude>
+						<exclude>com/virtusa/vihanga/employeeservice/model/**</exclude>
+						<exclude>com/virtusa/vihanga/employeeservice/util/**</exclude>
+						<exclude>com/virtusa/vihanga/employeeservice/config/**</exclude>
+						<exclude>com/virtusa/vihanga/employeeservice/utill/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
