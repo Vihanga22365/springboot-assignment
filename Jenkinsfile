@@ -27,6 +27,12 @@ pipeline {
             steps {
                 dir('employee-service') {
                     bat 'mvn clean verify' // Assuming Maven is used for building
+
+//                     script {
+//                         def cucumberResults = "<path_to_cucumber_results_xml>"
+//                         def testStatus = checkCucumberTestStatus(cucumberResults)
+//                         echo "Cucumber test status: ${testStatus}"
+//                     }
                 }
             }
         }
@@ -150,19 +156,24 @@ pipeline {
 }
 
 def calculateCoveragePercentage(testResults) {
-    echo "test result"
-    def testResult = junit(testResults)
-    echo "totalTests"
-    def totalTests = testResult.getTestCount()
-    echo "totalPassed"
-    def totalPassed = testResult.getPassCount()
+    def testSuites = new XmlSlurper().parse(testResults)
+        def totalTests = 0
+        def totalCovered = 0
 
-    if (totalTests == 0) {
-        return 0
-    }
+        testSuites.'**'.findAll { testCase ->
+            testCase.name() == 'testcase'
+        }.each {
+            totalTests++
+            if (it.'@covered' != 'false') {
+                totalCovered++
+            }
+        }
 
-    def coveragePercentage = (totalPassed * 100) / totalTests
-    return coveragePercentage
+        if (totalTests > 0) {
+            coveragePercentage = (totalCovered / totalTests) * 100
+        }
+
+        return coveragePercentage.toInteger()
 }
 
 def checkCucumberTestStatus(cucumberResults) {
