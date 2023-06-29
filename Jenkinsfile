@@ -155,8 +155,11 @@ pipeline {
 
 def calculateCoveragePercentage(testResults) {
 
+    echo "Hii"
     def testSuites = new XmlSlurper().parse(testResults)
     def totalTests = 0
+
+    echo "Man"
     def totalCovered = 0
 
 
@@ -169,7 +172,6 @@ def calculateCoveragePercentage(testResults) {
         }
     }
 
-    echo totalTests;
 
     if (totalTests > 0) {
         coveragePercentage = (totalCovered / totalTests) * 100
