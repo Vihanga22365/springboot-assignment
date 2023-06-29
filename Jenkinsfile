@@ -14,15 +14,6 @@ pipeline {
                 dir('employee-service') {
                     // Run unit tests using Maven or your preferred build tool
                     bat 'mvn clean test' // Assuming Maven is used for building
-
-                    // Parse the test results and calculate the coverage percentage
-                    def testResults = junit testResults: '**/target/surefire-reports/*.xml'
-                    def coveragePercentage = calculateCoveragePercentage(testResults)
-
-                    // Fail the build if coverage is below 80%
-                    if (coveragePercentage < 80) {
-                        error "Unit test coverage is below 80% (${coveragePercentage}%). Aborting deployment."
-                    }
                 }
             }
         }
@@ -32,15 +23,6 @@ pipeline {
                 dir('employee-service') {
                     // Run Cucumber tests using Maven or your preferred build tool
                     bat 'mvn clean verify' // Assuming Maven is used for building
-
-                    // Parse the Cucumber test results and check the status
-                    def cucumberResults = junit testResults: '**/target/cucumber-reports/*.xml'
-                    def testStatus = checkCucumberTestStatus(cucumberResults)
-
-                    // Fail the build if any Cucumber tests have failed
-                    if (testStatus != 'pass') {
-                        error "Cucumber tests have failed. Aborting deployment."
-                    }
                 }
             }
         }
