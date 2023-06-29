@@ -150,15 +150,15 @@ pipeline {
 }
 
 def calculateCoveragePercentage(testResults) {
-    def xml = new XmlSlurper().parse(testResults)
-    def totalTests = xml.'@tests'
-    def totalPassed = xml.'@passed'
+    def testResult = junit(testResults)
+    def totalTests = testResult.getTestCount()
+    def totalPassed = testResult.getPassCount()
 
-    if (totalTests.toInteger() == 0) {
+    if (totalTests == 0) {
         return 0
     }
 
-    def coveragePercentage = (totalPassed.toInteger() * 100) / totalTests.toInteger()
+    def coveragePercentage = (totalPassed * 100) / totalTests
     return coveragePercentage
 }
 
