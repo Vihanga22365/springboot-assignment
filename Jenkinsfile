@@ -14,11 +14,11 @@ pipeline {
                 dir('employee-service') {
                     bat 'mvn clean test' // Assuming Maven is used for building
 
-                    script {
-                        def testResults = "**/target/surefire-reports/TEST-*.xml"
-                        def coveragePercentage = calculateCoveragePercentage(testResults)
-                        echo "Unit testing coverage percentage: ${coveragePercentage}%"
-                    }
+//                     script {
+//                         def testResults = "**/target/surefire-reports/TEST-*.xml"
+//                         def coveragePercentage = calculateCoveragePercentage(testResults)
+//                         echo "Unit testing coverage percentage: ${coveragePercentage}%"
+//                     }
                 }
             }
         }
