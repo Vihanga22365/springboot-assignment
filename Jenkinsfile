@@ -150,8 +150,11 @@ pipeline {
 }
 
 def calculateCoveragePercentage(testResults) {
+    echo "test result"
     def testResult = junit(testResults)
+    echo "totalTests"
     def totalTests = testResult.getTestCount()
+    echo "totalPassed"
     def totalPassed = testResult.getPassCount()
 
     if (totalTests == 0) {
