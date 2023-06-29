@@ -13,7 +13,7 @@ pipeline {
             steps {
                 dir('employee-service') {
                     // Run unit tests using Maven or your preferred build tool
-                    sh 'mvn clean test' // Assuming Maven is used for building
+                    bat 'mvn clean test' // Assuming Maven is used for building
 
                     // Parse the test results and calculate the coverage percentage
                     def testResults = junit testResults: '**/target/surefire-reports/*.xml'
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 dir('employee-service') {
                     // Run Cucumber tests using Maven or your preferred build tool
-                    sh 'mvn clean verify' // Assuming Maven is used for building
+                    bat 'mvn clean verify' // Assuming Maven is used for building
 
                     // Parse the Cucumber test results and check the status
                     def cucumberResults = junit testResults: '**/target/cucumber-reports/*.xml'
