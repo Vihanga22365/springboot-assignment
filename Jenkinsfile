@@ -31,6 +31,11 @@ pipeline {
             steps {
                 dir('employee-service') {
                     bat 'mvn clean verify' // Assuming Maven is used for building
+                    script {
+                        def cucumberResults = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\cucumber-results.xml"
+                        def cucumberTestStatus = checkCucumberTestStatus(cucumberResults)
+                        echo "Cucumber test status: ${cucumberTestStatus}"
+                    }
                 }
             }
         }
@@ -160,7 +165,6 @@ def calculateCoveragePercentage(testResults) {
 
     def totalCovered = 0
 
-    echo "Hii Man " . totalCovered;
 
     testSuites.'**'.findAll { testCase ->
         testCase.name() == 'testcase'
@@ -171,7 +175,6 @@ def calculateCoveragePercentage(testResults) {
         }
     }
 
-
     if (totalTests > 0) {
         coveragePercentage = (totalCovered / totalTests) * 100
     }
@@ -180,5 +183,14 @@ def calculateCoveragePercentage(testResults) {
 }
 
 def checkCucumberTestStatus(cucumberResults) {
-    return 'pass';
+    def testSuites = new XmlSlurper().parse(cucumberResults)
+        def failedScenarios = testSuites.'**'.findAll { testCase ->
+            testCase.name() == 'scenario' && testCase.'@status' == 'failed'
+        }
+
+        if (failedScenarios.isEmpty()) {
+            return 'pass'
+        } else {
+            return 'fail'
+        }
 }
