@@ -164,6 +164,7 @@ pipeline {
 
 def findCoveragePercentage(coverageReport) {
     def pattern = /<span class="percentage">([\d.]+)%<\/span>/
+    echo "matcher ${pattern}"
     def matcher = (coverageReport =~ pattern)
     if (matcher.find()) {
         return matcher.group(1).toFloat()
