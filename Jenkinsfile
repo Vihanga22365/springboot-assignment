@@ -38,7 +38,7 @@ pipeline {
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                         }
                     } else {
-                        echo "Unit test coverage is below 80%. Skipping deployment of Employee Service."
+                        echo "Unit test coverage is below 30%. Skipping deployment of Employee Service."
                     }
                 }
             }
@@ -99,23 +99,23 @@ pipeline {
 //             }
 //         }
 
-        stage('Build and Deploy Employee Service') {
-            steps {
-                dir('employee-service') {
-                    // Build the discovery-service using Maven
-                    bat 'mvn clean compile package'
-
-                    // Stop the local Tomcat server
-                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
-
-                    // Copy the newly built WAR file to the Tomcat webapps directory
-                    bat 'copy target\\employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
-
-                    // Start the Tomcat server
-                    bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
-                }
-            }
-        }
+//         stage('Build and Deploy Employee Service') {
+//             steps {
+//                 dir('employee-service') {
+//                     // Build the discovery-service using Maven
+//                     bat 'mvn clean compile package'
+//
+//                     // Stop the local Tomcat server
+//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"' // Stop the Tomcat server
+//
+//                     // Copy the newly built WAR file to the Tomcat webapps directory
+//                     bat 'copy target\\employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
+//
+//                     // Start the Tomcat server
+//                     bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
+//                 }
+//             }
+//         }
 
 //         stage('Build and Deploy Report Service') {
 //             steps {
