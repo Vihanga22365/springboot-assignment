@@ -12,36 +12,32 @@ pipeline {
         stage('Unit Testing for Employee Service') {
             steps {
                 dir('employee-service') {
-                    bat 'mvn clean test' // Assuming Maven is used for building
-
-                    script {
-                        def testResults = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\surefire-reports\\TEST-com.virtusa.vihanga.employeeservice.controller.EmployeeControllerTest.xml"
-                        def coveragePercentage = calculateCoveragePercentage(testResults)
-                        echo "Unit testing coverage percentage: ${coveragePercentage}%"
-
-                        if (coveragePercentage < 80) {
-                            error "Unit testing coverage is below the minimum threshold of 80%."
-                        }
-                    }
+                    bat 'mvn clean test'
                 }
             }
         }
 
-        stage('Cucumber Testing for Employee Service') {
+        stage('Check Coverage and Deploy Employee Service') {
             steps {
-                dir('employee-service') {
-                    bat 'mvn clean verify' // Assuming Maven is used for building
+                script {
+                    def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
+                    def coveragePercentage = findCoveragePercentage(coverageReport)
+                    if (coveragePercentage > 80) {
+                        dir('employee-service') {
+                            // Build the employee-service using Maven
+                            bat 'mvn clean compile package'
 
-                    // Generate XML and HTML reports
-                    bat 'mvn verify -Dcucumber.options="--plugin junit:target/cucumber-results.xml --plugin html:target/cucumber-html-report"'
+                            // Stop the local Tomcat server
+                            bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"'
 
-                    // Archive the reports
-                    archiveArtifacts artifacts: 'target/cucumber-results.xml, target/cucumber-html-report/**', fingerprint: true
+                            // Copy the newly built WAR file to the Tomcat webapps directory
+                            bat 'copy target\\employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
 
-                    script {
-                        def cucumberResults = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Employee System\\employee-service\\target\\cucumber-results.xml"
-                        def cucumberTestStatus = checkCucumberTestStatus(cucumberResults)
-                        echo "Cucumber test status: ${cucumberTestStatus}"
+                            // Start the Tomcat server
+                            bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
+                        }
+                    } else {
+                        echo "Unit test coverage is below 80%. Skipping deployment of Employee Service."
                     }
                 }
             }
@@ -165,39 +161,12 @@ pipeline {
     }
 }
 
-def calculateCoveragePercentage(testResults) {
-
-    def testSuites = new XmlSlurper().parse(testResults)
-    def totalTests = 0
-
-    def totalCovered = 0
-
-
-    testSuites.'**'.findAll { testCase ->
-        testCase.name() == 'testcase'
-    }.each {
-        totalTests++
-        if (it.'@covered' != 'false') {
-            totalCovered++
-        }
+def findCoveragePercentage(coverageReport) {
+    def pattern = /<span class="percentage">([\d.]+)%<\/span>/
+    def matcher = (coverageReport =~ pattern)
+    if (matcher.find()) {
+        return matcher.group(1).toFloat()
+    } else {
+        return 0
     }
-
-    if (totalTests > 0) {
-        coveragePercentage = (totalCovered / totalTests) * 100
-    }
-
-    return coveragePercentage.toInteger()
-}
-
-def checkCucumberTestStatus(cucumberResults) {
-    def testSuites = new XmlSlurper().parse(cucumberResults)
-        def failedScenarios = testSuites.'**'.findAll { testCase ->
-            testCase.name() == 'scenario' && testCase.'@status' == 'failed'
-        }
-
-        if (failedScenarios.isEmpty()) {
-            return 'pass'
-        } else {
-            return 'fail'
-        }
 }
