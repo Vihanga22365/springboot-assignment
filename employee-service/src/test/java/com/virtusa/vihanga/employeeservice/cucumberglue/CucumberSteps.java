@@ -24,6 +24,7 @@ public class CucumberSteps extends CucumberConfig {
     private String responseMessage;
 
     private String getMainUrl() {
+        System.out.println(mainUrl+8080+"/api/v1/");
         return mainUrl+"8500/api/v1/";
     }
 

@@ -3,13 +3,16 @@ package com.virtusa.vihanga.employeeservice.cucumberglue;
 import com.virtusa.vihanga.employeeservice.EmployeeServiceApplication;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.http.HttpHeaders;
 
-@ContextConfiguration
+import javax.ws.rs.core.Application;
+
+@ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
 @SpringBootTest(classes = EmployeeServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CucumberConfig {
 

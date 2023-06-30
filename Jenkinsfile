@@ -22,7 +22,9 @@ pipeline {
                 script {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
+                    def cucumberTestResult = runCucumberTests()
                     echo "Unit test coverage: ${coveragePercentage}%"
+                    echo "Cucumber: ${cucumberTestResult}"
                     if (coveragePercentage > 30) {
                         dir('employee-service') {
                             // Build the employee-service using Maven
@@ -169,5 +171,22 @@ def findCoveragePercentage(coverageReport) {
         return matcher.group(1).toFloat()
     } else {
         return 0
+    }
+}
+
+def runCucumberTests() {
+    dir('employee-service') {
+        def mvnCommand = 'mvn clean test' // Modify this command if needed
+
+        def process = mvnCommand.execute()
+        def exitCode = process.waitFor()
+
+        if (exitCode == 0) {
+            echo "Cucumber tests passed successfully."
+            return true
+        } else {
+            echo "Cucumber tests failed."
+            return false
+        }
     }
 }
