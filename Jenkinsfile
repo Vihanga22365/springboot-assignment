@@ -23,7 +23,7 @@ pipeline {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
 
-                    def cucumberReport = readFile(file: 'employee-service/target/cucumber-html-reports/cucumber.json') // Replace with the actual path to your cucumber report
+                    def cucumberReport = readFile(file: 'employee-service/target/cucumber.json') // Replace with the actual path to your cucumber report
                     def passPercentage = runCucumberTests(cucumberReport)
                     echo "Unit test coverage: ${coveragePercentage}%"
                     echo "Cucumber: ${passPercentage}"
