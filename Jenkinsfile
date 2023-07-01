@@ -168,11 +168,22 @@ def runCucumberTests() {
     dir('employee-service') {
         bat 'mvn clean verify -P cucumberTest'
 
-        def cucumberReport = readFile(file: 'target/cucumber-results.xml')
-        def passCount = (cucumberReport.'//testsuite'.@tests as int) - (cucumberReport.'//testsuite'.@failures as int) - (cucumberReport.'//testsuite'.@errors as int)
-        def totalCount = cucumberReport.'//testsuite'.@tests as int
-        def passPercentage = (passCount / totalCount) * 100
+        // Assuming you have a Cucumber report in XML format
+            def cucumberReport = readFile(file: 'target/cucumber-results.xml')
 
-        return passPercentage
+            // Parse the XML report to extract test results
+            def cucumberXml = new XmlSlurper().parseText(cucumberReport)
+
+            // Extract the necessary data from the XML structure
+            def totalTests = cucumberXml.testsuite.@tests
+            def passedTests = cucumberXml.testsuite.@tests - cucumberXml.testsuite.@failures
+
+            // Calculate the percentage of passed tests
+            def cucumberTestResult = (passedTests.toFloat() / totalTests.toFloat()) * 100
+
+            // Round the percentage to two decimal places
+            cucumberTestResult = cucumberTestResult.round(2)
+
+            return cucumberTestResult
     }
 }
