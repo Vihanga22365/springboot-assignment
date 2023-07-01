@@ -22,11 +22,9 @@ pipeline {
                 script {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
-
-                    def cucumberReport = readFile(file: 'employee-service/target/cucumber.json') // Replace with the actual path to your cucumber report
-                    def passPercentage = runCucumberTests(cucumberReport)
+                    def cucumberTestResult = runCucumberTests()
                     echo "Unit test coverage: ${coveragePercentage}%"
-                    echo "Cucumber: ${passPercentage}"
+                    echo "Cucumber: ${cucumberTestResult}"
                     if (coveragePercentage > 30) {
                         dir('employee-service') {
                             bat 'mvn clean compile package'
@@ -169,19 +167,17 @@ def findCoveragePercentage(coverageReport) {
     }
 }
 
-def runCucumberTests(cucumberReport) {
-    // Assuming the cucumber report is in JSON format
-    def report = new groovy.json.JsonSlurper().parseText(cucumberReport)
+def runCucumberTests() {
+    def cucumberResultsFile = 'employee-service/target/cucumber.json'
 
-    // Extract the relevant information from the report
-    def totalScenarios = report.totalScenarios
-    def passedScenarios = report.passedScenarios
-
-    // Calculate the pass percentage
-    def passPercentage = (passedScenarios / totalScenarios) * 100
-
-    // Round the pass percentage to two decimal places
-    passPercentage = passPercentage.round(2)
-
-    return passPercentage
+    try {
+        def json = new JsonSlurper().parseText(readFile(file: cucumberResultsFile))
+        def totalTests = json.length
+        def passedTests = json.count { it.status == 'passed' }
+        def passPercentage = (passedTests / totalTests) * 100
+        return passPercentage
+    } catch (Exception e) {
+        echo "Failed to read or parse Cucumber test results: ${e.message}"
+        return 0
+    }
 }
