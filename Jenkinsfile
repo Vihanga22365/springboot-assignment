@@ -22,21 +22,16 @@ pipeline {
                 script {
                     def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
                     def coveragePercentage = findCoveragePercentage(coverageReport)
-                    def cucumberTestResult = runCucumberTests()
+
+                    def cucumberReport = readFile(file: 'employee-service/target/cucumber-html-reports/cucumber.json') // Replace with the actual path to your cucumber report
+                    def passPercentage = runCucumberTests(cucumberReport)
                     echo "Unit test coverage: ${coveragePercentage}%"
-                    echo "Cucumber: ${cucumberTestResult}"
+                    echo "Cucumber: ${passPercentage}"
                     if (coveragePercentage > 30) {
                         dir('employee-service') {
-                            // Build the employee-service using Maven
                             bat 'mvn clean compile package'
-
-                            // Stop the local Tomcat server
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"'
-
-                            // Copy the newly built WAR file to the Tomcat webapps directory
                             bat 'copy target\\employee-service-0.0.1-SNAPSHOT.war "C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/webapps/"'
-
-                            // Start the Tomcat server
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                         }
                     } else {
@@ -174,20 +169,19 @@ def findCoveragePercentage(coverageReport) {
     }
 }
 
-def runCucumberTests() {
-    return true;
-//     dir('employee-service') {
-//         def mvnCommand = 'mvn clean test' // Modify this command if needed
-//
-//         def process = mvnCommand.execute()
-//         def exitCode = process.waitFor()
-//
-//         if (exitCode == 0) {
-//             echo "Cucumber tests passed successfully."
-//             return true
-//         } else {
-//             echo "Cucumber tests failed."
-//             return false
-//         }
-//     }
+def runCucumberTests(cucumberReport) {
+    // Assuming the cucumber report is in JSON format
+    def report = new groovy.json.JsonSlurper().parseText(cucumberReport)
+
+    // Extract the relevant information from the report
+    def totalScenarios = report.totalScenarios
+    def passedScenarios = report.passedScenarios
+
+    // Calculate the pass percentage
+    def passPercentage = (passedScenarios / totalScenarios) * 100
+
+    // Round the pass percentage to two decimal places
+    passPercentage = passPercentage.round(2)
+
+    return passPercentage
 }
