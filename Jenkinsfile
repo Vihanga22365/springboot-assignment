@@ -9,14 +9,6 @@ pipeline {
             }
         }
 
-        stage('Unit Testing for Employee Service') {
-            steps {
-                dir('employee-service') {
-                    bat 'mvn clean test'
-                }
-            }
-        }
-
         stage('Check Coverage, Cucumber Result and then Deploy Employee Service') {
             steps {
                 script {
