@@ -20,8 +20,8 @@ pipeline {
         stage('Check Coverage, Cucumber Result and then Deploy Employee Service') {
             steps {
                 script {
-                    def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
-                    def coveragePercentage = findCoveragePercentage(coverageReport)
+
+                    def coveragePercentage = findCoveragePercentage()
                     def cucumberTestResult = runCucumberTests()
                     echo "Unit test coverage: ${coveragePercentage}%"
                     echo "Cucumber: ${cucumberTestResult}"
@@ -157,30 +157,28 @@ pipeline {
     }
 }
 
-def findCoveragePercentage(coverageReport) {
-    def pattern = /<td class="ctr2">([\d.]+)%<\/td>/
-    def matcher = (coverageReport =~ pattern)
-    if (matcher.find()) {
-        return matcher.group(1).toFloat()
-    } else {
-        return 0
+def findCoveragePercentage() {
+    dir('employee-service') {
+        bat 'mvn clean test -P unitTest'
+        def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
+
+        def pattern = /<td class="ctr2">([\d.]+)%<\/td>/
+        def matcher = (coverageReport =~ pattern)
+        if (matcher.find()) {
+            return matcher.group(1).toFloat()
+        } else {
+            return 0
+        }
     }
 }
 
 def runCucumberTests() {
-    return true;
-//     dir('employee-service') {
-//         def mvnCommand = 'mvn clean verify' // Modify this command if needed
-//
-//         def process = mvnCommand.execute()
-//         def exitCode = process.waitFor()
-//
-//         if (exitCode == 0) {
-//             echo "Cucumber tests passed successfully."
-//             return true
-//         } else {
-//             echo "Cucumber tests failed."
-//             return false
-//         }
-//     }
+    dir('employee-service') {
+        def cucumberReport = readFile(file: 'employee-service/target/cucumber-results.xml')
+        def passCount = (cucumberReport.'//testsuite'.@tests as int) - (cucumberReport.'//testsuite'.@failures as int) - (cucumberReport.'//testsuite'.@errors as int)
+        def totalCount = cucumberReport.'//testsuite'.@tests as int
+        def passPercentage = (passCount / totalCount) * 100
+
+        return passPercentage
+    }
 }
