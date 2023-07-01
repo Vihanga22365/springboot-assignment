@@ -152,7 +152,7 @@ pipeline {
 def findCoveragePercentage() {
     dir('employee-service') {
         bat 'mvn clean test -P unitTest'
-        def coverageReport = readFile(file: 'employee-service/target/site/jacoco/index.html')
+        def coverageReport = readFile(file: 'target/site/jacoco/index.html')
 
         def pattern = /<td class="ctr2">([\d.]+)%<\/td>/
         def matcher = (coverageReport =~ pattern)
@@ -168,7 +168,7 @@ def runCucumberTests() {
     dir('employee-service') {
         bat 'mvn clean verify -P cucumberTest'
 
-        def cucumberReport = readFile(file: 'employee-service/target/cucumber-results.xml')
+        def cucumberReport = readFile(file: 'target/cucumber-results.xml')
         def passCount = (cucumberReport.'//testsuite'.@tests as int) - (cucumberReport.'//testsuite'.@failures as int) - (cucumberReport.'//testsuite'.@errors as int)
         def totalCount = cucumberReport.'//testsuite'.@tests as int
         def passPercentage = (passCount / totalCount) * 100
