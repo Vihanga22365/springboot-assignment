@@ -178,7 +178,7 @@ def runCucumberTests() {
         def totalScenarios = json[0].elements.size()
         def passedScenarios = json[0].elements.count { it.status == 'passed' }
 
-        echo "PassedScenario ${passedScenarios}"
+        echo "totalScenarios ${totalScenarios}"
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
