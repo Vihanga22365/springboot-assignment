@@ -172,7 +172,7 @@ def runCucumberTests() {
 
         // Assuming you have a Cucumber report in XML format
         def cucumberReport = readFile(file: 'target/cucumber.json')
-        def cucumberJsonFile = file(cucumberJsonPath)
+        def cucumberJsonFile = file(cucumberReports)
         def cucumberTestResult = 0
 
         if (cucumberJsonFile.exists()) {
