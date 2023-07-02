@@ -173,7 +173,7 @@ def runCucumberTests() {
         // Assuming you have a Cucumber report in XML format
 //         def cucumberReport = readFile(file: 'target/cucumber.json')
         def cucumberJsonFile = 'target/cucumber.json';
-        def cucumberJsonContent = readFile(cucumberJsonPath)
+        def cucumberJsonContent = readFile(cucumberJsonFile)
             def json = readJSON(text: cucumberJsonContent)
             def totalScenarios = json[0].elements.size()
             def passedScenarios = json[0].elements.count { it.status == 'passed' }
