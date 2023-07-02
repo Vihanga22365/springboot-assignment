@@ -8,7 +8,7 @@ Feature: Employee Management
 
   Scenario: Get Single Employee Details
     Given the employee's id
-    When a Get request is sent to "employee/EMP05"
+    When a Get request is sent to "employee/EMP20"
     Then the get employee response status code should be 200
     And the response body contain that employee's details
 
