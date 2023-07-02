@@ -169,7 +169,7 @@ def runCucumberTests() {
         bat 'mvn clean verify -P cucumberTest'
 
         // Assuming you have a Cucumber report in XML format
-            def cucumberReport = readFile(file: 'target/cucumber-results.xml')
+            def cucumberReport = readFile(file: 'target/cucumber.json')
     def cucumberTestResult = 0
 
     if (cucumberJsonFile.exists()) {
