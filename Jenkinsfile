@@ -172,18 +172,12 @@ def runCucumberTests() {
 
         // Assuming you have a Cucumber report in XML format
 //         def cucumberReport = readFile(file: 'target/cucumber.json')
-        def cucumberJsonFile = file('target/cucumber.json')
-        def cucumberTestResult = 0
-
-            if (cucumberJsonFile.exists()) {
-                def json = new JsonSlurper().parseText(cucumberJsonFile.text)
-                def totalScenarios = json[0].elements.size()
-                def passedScenarios = json[0].elements.findAll { it.status == 'passed' }.size()
-
-                if (totalScenarios > 0) {
-                    cucumberTestResult = (passedScenarios * 100) / totalScenarios
-                }
-            }
+        def cucumberJsonFile = 'target/cucumber.json';
+        def cucumberJsonContent = readFile(cucumberJsonPath)
+            def json = readJSON(text: cucumberJsonContent)
+            def totalScenarios = json[0].elements.size()
+            def passedScenarios = json[0].elements.count { it.status == 'passed' }
+            def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
             return cucumberTestResult
     }
