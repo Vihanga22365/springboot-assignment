@@ -171,19 +171,20 @@ def runCucumberTests() {
         bat 'mvn clean verify -P cucumberTest'
 
         // Assuming you have a Cucumber report in XML format
-            def cucumberReport = readFile(file: 'target/cucumber.json')
-    def cucumberTestResult = 0
+        def cucumberReport = readFile(file: 'target/cucumber.json')
+        def cucumberJsonFile = file(cucumberJsonPath)
+        def cucumberTestResult = 0
 
-    if (cucumberJsonFile.exists()) {
-        def json = new JsonSlurper().parseText(cucumberJsonFile.text)
-        def totalScenarios = json[0].elements.size()
-        def passedScenarios = json[0].elements.findAll { it.status == 'passed' }.size()
+        if (cucumberJsonFile.exists()) {
+            def json = new JsonSlurper().parseText(cucumberJsonFile.text)
+            def totalScenarios = json[0].elements.size()
+            def passedScenarios = json[0].elements.findAll { it.status == 'passed' }.size()
 
-        if (totalScenarios > 0) {
-            cucumberTestResult = (passedScenarios * 100) / totalScenarios
+            if (totalScenarios > 0) {
+                cucumberTestResult = (passedScenarios * 100) / totalScenarios
+            }
         }
-    }
 
-    return cucumberTestResultss
+        return cucumberTestResult
     }
 }
