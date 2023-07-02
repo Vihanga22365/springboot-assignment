@@ -174,11 +174,14 @@ def runCucumberTests() {
 //         def cucumberReport = readFile(file: 'target/cucumber.json')
         def cucumberJsonFile = 'target/cucumber.json';
         def cucumberJsonContent = readFile(cucumberJsonFile)
-            def json = readJSON(text: cucumberJsonContent)
-            def totalScenarios = json[0].elements.size()
-            def passedScenarios = json[0].elements.count { it.status == 'passed' }
-            def cucumberTestResult = (passedScenarios * 100) / totalScenarios
+        def json = readJSON(text: cucumberJsonContent)
+        def totalScenarios = json[0].elements.size()
+        def passedScenarios = json[0].elements.count { it.status == 'passed' }
 
-            return cucumberTestResult
+        echo "PassedScenario ${passedScenarios}"
+
+        def cucumberTestResult = (passedScenarios * 100) / totalScenarios
+
+        return cucumberTestResult
     }
 }
