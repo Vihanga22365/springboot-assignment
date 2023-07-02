@@ -11,15 +11,16 @@ pipeline {
             }
         }
 
-        stage('Check Coverage, Cucumber Result and then Deploy Employee Service') {
+        stage('Check Unit Testing %, Cucumber Test % and then Deploy Employee Service') {
             steps {
                 script {
 
                     def coveragePercentage = findCoveragePercentage()
                     def cucumberTestResult = runCucumberTests()
-                    echo "Unit test coverage: ${coveragePercentage}%"
-                    echo "Cucumber: ${cucumberTestResult}"
-                    if (coveragePercentage > 30) {
+                    echo "Unit Test Coverage: ${coveragePercentage}%"
+                    echo "Cucumber Test Coverage: ${cucumberTestResult}%"
+
+                    if (coveragePercentage > 30 && cucumberTestResult > 90) {
                         dir('employee-service') {
                             bat 'mvn clean compile package'
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/shutdown.bat"'
@@ -27,7 +28,7 @@ pipeline {
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                         }
                     } else {
-                        echo "Unit test coverage is below 30%. Skipping deployment of Employee Service."
+                        echo "Unit test % is below 30% or Cucumber test % is below than 90% . Skipping deployment of Employee Service."
                     }
                 }
             }
@@ -170,13 +171,10 @@ def runCucumberTests() {
     dir('employee-service') {
         bat 'mvn clean verify -P cucumberTest'
 
-        // Assuming you have a Cucumber report in XML format
-//         def cucumberReport = readFile(file: 'target/cucumber.json')
         def cucumberJsonFile = 'target/cucumber.json';
         def cucumberJsonContent = readFile(cucumberJsonFile)
         def json = readJSON(text: cucumberJsonContent)
         def totalScenarios = json[0].elements.size()
-//         def passedScenarios = json[0].elements.count { it.status == 'passed' }
         def passedScenarios = json[0].elements.count { it.steps.every { it.result.status == 'passed' } }
 
         echo "totalScenarios ${totalScenarios}"
