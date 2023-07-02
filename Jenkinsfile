@@ -170,20 +170,18 @@ def runCucumberTests() {
 
         // Assuming you have a Cucumber report in XML format
             def cucumberReport = readFile(file: 'target/cucumber-results.xml')
+    def cucumberTestResult = 0
 
-            // Parse the XML report to extract test results
-            def cucumberXml = new XmlSlurper().parseText(cucumberReport)
+    if (cucumberJsonFile.exists()) {
+        def json = new JsonSlurper().parseText(cucumberJsonFile.text)
+        def totalScenarios = json[0].elements.size()
+        def passedScenarios = json[0].elements.findAll { it.status == 'passed' }.size()
 
-            // Extract the necessary data from the XML structure
-            def totalTests = cucumberXml.testsuite.@tests
-            def passedTests = cucumberXml.testsuite.@tests - cucumberXml.testsuite.@failures
+        if (totalScenarios > 0) {
+            cucumberTestResult = (passedScenarios * 100) / totalScenarios
+        }
+    }
 
-            // Calculate the percentage of passed tests
-            def cucumberTestResult = (passedTests.toFloat() / totalTests.toFloat()) * 100
-
-            // Round the percentage to two decimal places
-            cucumberTestResult = cucumberTestResult.round(2)
-
-            return cucumberTestResult
+    return cucumberTestResultss
     }
 }
