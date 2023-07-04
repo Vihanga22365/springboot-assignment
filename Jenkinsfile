@@ -180,9 +180,6 @@ def runCucumberTests() {
 
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
-        echo "failedScenarios ${failedScenarios}"
-
-        echo "failedScenarios ${failedScenarios}"
 
         // Extract and print error details from failed scenarios
         failedScenarios.each { scenario ->
@@ -191,9 +188,9 @@ def runCucumberTests() {
             def failedStepName = failedStep.name
             def error = failedStep.result.error_message
 
-            echo "Scenario Name: ${scenarioName}"
+            echo "Failed Scenario Name: ${scenarioName}"
             echo "Failed Step: ${failedStepName}"
-            echo "Error: ${error}"
+            echo "Failed Step Error: ${error}"
             echo ""
         }
 
