@@ -176,31 +176,24 @@ def runCucumberTests() {
         def json = readJSON(text: cucumberJsonContent)
         def totalScenarios = json[0].elements.size()
         def passedScenarios = json[0].elements.count { it.steps.every { it.result.status == 'passed' } }
-
-        def failedScenarios = []
-
-        json[0].elements.each { scenario ->
-            def scenarioName = scenario.name
-            def failedSteps = scenario.steps.findAll { step -> step.result.status == 'failed' }
-            if (failedSteps) {
-                def failureReasons = failedSteps.collect { step -> step.result.error_message }
-                failedScenarios.add([scenarioName: failureReasons])
-            }
-        }
+        def failedScenarios = json[0].elements.findAll { it.steps.any { step -> step.result.status == 'failed' } }
 
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
-        echo "fail ${failedScenarios}"
 
-        if (failedScenarios) {
-            failedScenarios.each { scenario ->
-                echo "Failed scenario: ${scenario.key}"
-                scenario.value.each { error ->
-                    echo "Error: ${error}"
-                }
-            }
-        } else {
-            echo "No failed scenarios."
+        failedScenarios.each { scenario ->
+            def errorStep = scenario.steps.find { step -> step.result.status == 'failed' }
+            def errorDetails = jsonSlurper.parseText(errorStep.result.error_message)
+            def errorMessage = errorDetails.error
+            def errorCode = errorDetails.status
+            def errorPath = errorDetails.path
+
+            echo "-------------------------"
+            echo "Failed Scenario: ${scenario.name}"
+            echo "Error Message: ${errorMessage}"
+            echo "Error Code: ${errorCode}"
+            echo "Error Path: ${errorPath}"
+            echo "-------------------------"
         }
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
