@@ -182,29 +182,18 @@ def runCucumberTests() {
         echo "passedScenarios ${passedScenarios}"
         echo "failedScenarios ${failedScenarios}"
 
-        def errorDetails = []
+        echo "failedScenarios ${failedScenarios}"
+
+        // Extract and print error details from failed scenarios
         failedScenarios.each { scenario ->
-            def failedStep = scenario.steps.find { it.result.status == 'failed' }
             def scenarioName = scenario.name
+            def failedStep = scenario.steps.find { it.result.status == 'failed' }
             def failedStepName = failedStep.name
-            def errorMessage = failedStep.result.error_message
+            def error = failedStep.result.error_message
 
-            def error = new groovy.json.JsonSlurper().parseText(errorMessage)
-            def errorDescription = error.error
-            def statusCode = error.status
-            def errorPath = error.path
-
-            errorDetails << [scenarioName: scenarioName, failedStepName: failedStepName, errorDescription: errorDescription, statusCode: statusCode, errorPath: errorPath]
-        }
-
-        // Print error details
-        echo "Error Details:"
-        errorDetails.each { error ->
-            echo "Scenario Name: ${error.scenarioName}"
-            echo "Failed Step: ${error.failedStepName}"
-            echo "Error: ${error.errorDescription}"
-            echo "Status Code: ${error.statusCode}"
-            echo "Error Path: ${error.errorPath}"
+            echo "Scenario Name: ${scenarioName}"
+            echo "Failed Step: ${failedStepName}"
+            echo "Error: ${error}"
             echo ""
         }
 
