@@ -14,6 +14,6 @@ Feature: Employee Management
 
   Scenario: Get Single Employee Salary
     Given the employee's id that salary needed
-    When a Get request is sent to "employee/salary/EMP03" to get salary;
+    When a Get request is sent to "employee/salary/EMP0333" to get salary;
     Then the get salary response status code should be 200
     And the response body contain that employee's salary details
