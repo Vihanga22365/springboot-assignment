@@ -182,26 +182,31 @@ def runCucumberTests() {
         echo "passedScenarios ${passedScenarios}"
         echo "failedScenarios ${failedScenarios}"
 
-        // Extract error details from failed scenarios
-                def errorDetails = []
-                json[0].elements.each { scenario ->
-                    if (scenario.steps[1].result.status == 'failed') {
-                        def error_message = scenario.steps[1].result.error_message
-                        def error_code = scenario.steps[1].result.status
-                        def error_path = new JsonSlurper().parseText(error_message)['path']
+        def errorDetails = []
+        failedScenarios.each { scenario ->
+            def failedStep = scenario.steps.find { it.result.status == 'failed' }
+            def scenarioName = scenario.name
+            def failedStepName = failedStep.name
+            def errorMessage = failedStep.result.error_message
 
-                        errorDetails << [error: error_message, status: error_code, path: error_path]
-                    }
-                }
+            def error = new groovy.json.JsonSlurper().parseText(errorMessage)
+            def errorDescription = error.error
+            def statusCode = error.status
+            def errorPath = error.path
 
-                // Print error details
-                echo "Error Details:"
-                errorDetails.each { error ->
-                    echo "Error: ${error.error}"
-                    echo "Status: ${error.status}"
-                    echo "Path: ${error.path}"
-                    echo ""
-                }
+            errorDetails << [scenarioName: scenarioName, failedStepName: failedStepName, errorDescription: errorDescription, statusCode: statusCode, errorPath: errorPath]
+        }
+
+        // Print error details
+        echo "Error Details:"
+        errorDetails.each { error ->
+            echo "Scenario Name: ${error.scenarioName}"
+            echo "Failed Step: ${error.failedStepName}"
+            echo "Error: ${error.errorDescription}"
+            echo "Status Code: ${error.statusCode}"
+            echo "Error Path: ${error.errorPath}"
+            echo ""
+        }
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
