@@ -28,7 +28,7 @@ pipeline {
                             bat '"C:/Program Files/Apache Software Foundation/Tomcat 8.5_Tomcat8.1/bin/startup.bat"'
                         }
                     } else {
-                        echo "Unit test % is below 30% or Cucumber test % is below than 90% . Skipping deployment of Employee Service."
+                        echo "Unit test Percentage is below 30% or Cucumber test Percentage is below than 90% . Skipping deployment of Employee Service."
                     }
                 }
             }
