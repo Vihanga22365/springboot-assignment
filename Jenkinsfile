@@ -181,8 +181,8 @@ def runCucumberTests() {
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
 
-        // Extract and print error details from failed scenarios
-        failedScenarios.each { scenario ->
+        for (int index = 0; index < failedScenarios.size(); index++) {
+            def scenario = failedScenarios[index]
             def scenarioName = scenario.name
             def failedStep = scenario.steps.find { it.result.status == 'failed' }
             def failedStepName = failedStep.name
