@@ -177,8 +177,20 @@ def runCucumberTests() {
         def totalScenarios = json[0].elements.size()
         def passedScenarios = json[0].elements.count { it.steps.every { it.result.status == 'passed' } }
 
+        def failedScenarios = []
+
+        json[0].elements.each { scenario ->
+            def scenarioName = scenario.name
+            def failedSteps = scenario.steps.findAll { step -> step.result.status == 'failed' }
+            if (failedSteps) {
+                def failureReasons = failedSteps.collect { it.result.error_message }
+                failedScenarios.add([scenarioName: failureReasons])
+            }
+        }
+
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
+        echo "failedScenarios ${failedScenarios}"
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
