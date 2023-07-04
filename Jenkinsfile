@@ -183,14 +183,24 @@ def runCucumberTests() {
             def scenarioName = scenario.name
             def failedSteps = scenario.steps.findAll { step -> step.result.status == 'failed' }
             if (failedSteps) {
-                def failureReasons = failedSteps.collect { it.result.error_message }
+                def failureReasons = failedSteps.collect { step -> step.result.error_message }
                 failedScenarios.add([scenarioName: failureReasons])
             }
         }
 
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
-        echo "failedScenarios ${failedScenarios}"
+
+        if (failedScenarios) {
+            failedScenarios.each { scenario ->
+                echo "Failed scenario: ${scenario.key}"
+                scenario.value.each { error ->
+                    echo "Error: ${error}"
+                }
+            }
+        } else {
+            echo "No failed scenarios."
+        }
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
