@@ -180,21 +180,28 @@ def runCucumberTests() {
 
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
+        echo "failedScenarios ${failedScenarios}"
 
-        failedScenarios.each { scenario ->
-            def errorStep = scenario.steps.find { step -> step.result.status == 'failed' }
-            def errorDetails = jsonSlurper.parseText(errorStep.result.error_message)
-            def errorMessage = errorDetails.error
-            def errorCode = errorDetails.status
-            def errorPath = errorDetails.path
+        // Extract error details from failed scenarios
+                def errorDetails = []
+                json[0].elements.each { scenario ->
+                    if (scenario.steps[1].result.status == 'failed') {
+                        def error_message = scenario.steps[1].result.error_message
+                        def error_code = scenario.steps[1].result.status
+                        def error_path = new JsonSlurper().parseText(error_message)['path']
 
-            echo "-------------------------"
-            echo "Failed Scenario: ${scenario.name}"
-            echo "Error Message: ${errorMessage}"
-            echo "Error Code: ${errorCode}"
-            echo "Error Path: ${errorPath}"
-            echo "-------------------------"
-        }
+                        errorDetails << [error: error_message, status: error_code, path: error_path]
+                    }
+                }
+
+                // Print error details
+                echo "Error Details:"
+                errorDetails.each { error ->
+                    echo "Error: ${error.error}"
+                    echo "Status: ${error.status}"
+                    echo "Path: ${error.path}"
+                    echo ""
+                }
 
         def cucumberTestResult = (passedScenarios * 100) / totalScenarios
 
