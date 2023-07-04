@@ -190,6 +190,7 @@ def runCucumberTests() {
 
         echo "totalScenarios ${totalScenarios}"
         echo "passedScenarios ${passedScenarios}"
+        echo "fail ${failedScenarios}"
 
         if (failedScenarios) {
             failedScenarios.each { scenario ->
