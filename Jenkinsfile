@@ -188,9 +188,9 @@ def runCucumberTests() {
             def failedStepName = failedStep.name
             def error = failedStep.result.error_message
 
-            echo "Failed Scenario Name: ${scenarioName}"
-            echo "Failed Step: ${failedStepName}"
-            echo "Failed Step Error: ${error}"
+            echo "(${index + 1}) Failed Scenario Name: ${scenarioName}"
+            echo "(${index + 1}) Failed Step: ${failedStepName}"
+            echo "(${index + 1}) Failed Step Error: ${error}"
             echo ""
         }
 
