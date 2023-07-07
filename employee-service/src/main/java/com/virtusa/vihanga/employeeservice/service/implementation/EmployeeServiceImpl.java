@@ -4,6 +4,7 @@ import com.virtusa.vihanga.employeeservice.config.DepartmentUrlConfiguration;
 import com.virtusa.vihanga.employeeservice.dto.DepartmentResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeSalaryResponse;
+import com.virtusa.vihanga.employeeservice.exception.EmployeeNotFoundException;
 import com.virtusa.vihanga.employeeservice.model.Employee;
 import com.virtusa.vihanga.employeeservice.repository.EmployeeRepository;
 import com.virtusa.vihanga.employeeservice.service.EmployeeService;
@@ -33,6 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(Employee employee) {
+        log.trace("EmployeeServiceImpl - createEmployee - employee {}", employee);
         Employee savedEmployee = employeeRepository.save(employee);
 
         EmployeeResponse employeeResponse = EmployeeResponse.builder()
@@ -49,24 +51,37 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse getEmployee(String employeeId) {
+    public EmployeeResponse getEmployee(String employeeId) throws EmployeeNotFoundException {
+        log.trace("EmployeeServiceImpl - getEmployee - employeeId {}", employeeId);
         Optional<Employee> fetchEmployee = employeeRepository.findById(employeeId);
+        EmployeeResponse employeeResponse;
 
-        EmployeeResponse employeeResponse = EmployeeResponse.builder()
-                .employeeId(fetchEmployee.get().getEmployeeId())
-                .name(fetchEmployee.get().getName())
-                .department(fetchEmployee.get().getDepartment())
-                .phoneNo(fetchEmployee.get().getPhoneNo())
-                .address(fetchEmployee.get().getAddress())
-                .gender(fetchEmployee.get().getGender())
-                .employeeType(fetchEmployee.get().getEmployeeType())
-                .build();
+        if(fetchEmployee.isPresent()) {
+
+            employeeResponse = EmployeeResponse.builder()
+                    .employeeId(fetchEmployee.get().getEmployeeId())
+                    .name(fetchEmployee.get().getName())
+                    .department(fetchEmployee.get().getDepartment())
+                    .phoneNo(fetchEmployee.get().getPhoneNo())
+                    .address(fetchEmployee.get().getAddress())
+                    .gender(fetchEmployee.get().getGender())
+                    .employeeType(fetchEmployee.get().getEmployeeType())
+                    .build();
+
+
+
+        } else {
+            log.error("EmployeeServiceImpl - getEmployee - Employee Not Found");
+            throw new EmployeeNotFoundException("Employee Not Found");
+        }
 
         return employeeResponse;
+
     }
 
     @Override
-    public EmployeeSalaryResponse getEmployeeSalary(String employeeId) {
+    public EmployeeSalaryResponse getEmployeeSalary(String employeeId) throws EmployeeNotFoundException {
+        log.trace("EmployeeServiceImpl - getEmployeeSalary - employeeId {}", employeeId);
         EmployeeResponse employeeResponse = getEmployee(employeeId);
         String departmentId = employeeResponse.getDepartment();
 
@@ -88,6 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void uploadEmployee(MultipartFile multipartFile) throws IOException {
+//        log.trace("EmployeeServiceImpl - uploadEmployee - multipartFile {}", multipartFile);
         if (ExcelUploadImpl.isValidExcelFile(multipartFile)) {
             List<Employee> employees = ExcelUploadImpl.getEmployeeDataFromExcel(multipartFile);
             employeeRepository.saveAll(employees);

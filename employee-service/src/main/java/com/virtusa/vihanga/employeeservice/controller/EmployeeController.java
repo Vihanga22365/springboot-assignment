@@ -2,6 +2,7 @@ package com.virtusa.vihanga.employeeservice.controller;
 
 import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeSalaryResponse;
+import com.virtusa.vihanga.employeeservice.exception.EmployeeNotFoundException;
 import com.virtusa.vihanga.employeeservice.model.Employee;
 import com.virtusa.vihanga.employeeservice.service.EmployeeService;
 import com.virtusa.vihanga.employeeservice.utill.StandardResponse;
@@ -28,6 +29,7 @@ public class EmployeeController {
 
     @PostMapping("employee")
     public ResponseEntity<StandardResponse> createEmployee(@RequestBody Employee employee) {
+        log.trace("EmployeeController - createEmployee - employee {}", employee);
         EmployeeResponse employeeResponse = employeeService.createEmployee(employee);
 
         return new ResponseEntity<StandardResponse>(
@@ -45,7 +47,8 @@ public class EmployeeController {
     }
 
     @GetMapping("employee/{id}")
-    public ResponseEntity<StandardResponse> getEmployee(@PathVariable("id") String employeeId) {
+    public ResponseEntity<StandardResponse> getEmployee(@PathVariable("id") String employeeId) throws EmployeeNotFoundException {
+        log.trace("EmployeeController - getEmployee - employeeId {}", employeeId);
         EmployeeResponse employeeResponse = employeeService.getEmployee(employeeId);
 
         return new ResponseEntity<StandardResponse>(
@@ -57,7 +60,8 @@ public class EmployeeController {
     @CircuitBreaker(name = "employee", fallbackMethod = "fallBackMethodEmployee")
     @TimeLimiter(name = "employee")
     @Retry(name="employee")
-    public CompletableFuture<ResponseEntity<StandardResponse>> getEmployeeSalary(@PathVariable("id") String employeeId) {
+    public CompletableFuture<ResponseEntity<StandardResponse>> getEmployeeSalary(@PathVariable("id") String employeeId) throws EmployeeNotFoundException {
+        log.trace("EmployeeController - getEmployeeSalary - employeeId {}", employeeId);
         EmployeeSalaryResponse employeeSalaryResponse = employeeService.getEmployeeSalary(employeeId);
 
         return CompletableFuture.supplyAsync(() -> new ResponseEntity<StandardResponse>(
@@ -66,6 +70,7 @@ public class EmployeeController {
     }
 
     public CompletableFuture<ResponseEntity<StandardResponse>> fallBackMethodEmployee(@PathVariable("id") String employeeId, RuntimeException runtimeException) {
+        log.warn("EmployeeController - fallBackMethodEmployee");
         return CompletableFuture.supplyAsync(() -> new ResponseEntity<StandardResponse>(
                 new StandardResponse(503, "Department Service Unavailable", null), HttpStatus.SERVICE_UNAVAILABLE
         ));

@@ -1,6 +1,7 @@
 package com.virtusa.vihanga.employeeservice.controller;
 
 import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
+import com.virtusa.vihanga.employeeservice.exception.EmployeeNotFoundException;
 import com.virtusa.vihanga.employeeservice.model.Employee;
 import com.virtusa.vihanga.employeeservice.service.EmployeeService;
 import com.virtusa.vihanga.employeeservice.utill.EmployeeType;
@@ -30,7 +31,7 @@ class EmployeeControllerTest {
     private Employee employee;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws EmployeeNotFoundException {
         String employeeId = "EMP01";
 
         employee = Employee.builder()
@@ -66,7 +67,7 @@ class EmployeeControllerTest {
 
     @Test
     @DisplayName("Unit Testing For Get Employee Controller")
-    void getEmployee() {
+    void getEmployee() throws EmployeeNotFoundException {
         String employeeId = "EMP01";
         ResponseEntity<StandardResponse> getEmployee = employeeController.getEmployee(employeeId);
         assertEquals(200, getEmployee.getBody().getCode());
