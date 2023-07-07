@@ -2,6 +2,7 @@ package com.virtusa.vihanga.employeeservice.service;
 
 import com.virtusa.vihanga.employeeservice.dto.DepartmentResponse;
 import com.virtusa.vihanga.employeeservice.dto.EmployeeResponse;
+import com.virtusa.vihanga.employeeservice.exception.EmployeeNotFoundException;
 import com.virtusa.vihanga.employeeservice.model.Employee;
 import com.virtusa.vihanga.employeeservice.repository.EmployeeRepository;
 import com.virtusa.vihanga.employeeservice.utill.EmployeeType;
@@ -74,7 +75,7 @@ class EmployeeServiceTest {
 
     @Test
     @DisplayName("Get Employee Method Validate in Service Layer")
-    void getEmployee() {
+    void getEmployee() throws EmployeeNotFoundException {
         String employeeId = "EMP01";
 
         EmployeeResponse employeeDetails = employeeService.getEmployee(employeeId);
